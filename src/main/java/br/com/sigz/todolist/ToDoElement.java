@@ -16,6 +16,9 @@ public class ToDoElement {
     private LocalDateTime data;
     private ToDoElementStatus status;
 
+    public Long getId() {
+        return id;
+    }
 
     public String getNome() {
         return nome;
