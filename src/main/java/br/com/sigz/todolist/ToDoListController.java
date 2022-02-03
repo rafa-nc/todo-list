@@ -14,6 +14,7 @@ public class ToDoListController {
 
     @GetMapping
     public List<ToDoElement> getList() {
+
         return repository.findAll();
     }
 
@@ -34,6 +35,14 @@ public class ToDoListController {
     public void update(@PathVariable Long id, @RequestBody ToDoElement element) {
         element.setId(id);
         repository.save(element);
+
+    }
+
+    @GetMapping(value = "{id}")
+    public ToDoElement get(@PathVariable Long id) {
+        return repository.findById(id).get();
+
+
 
     }
 
