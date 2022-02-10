@@ -1,6 +1,8 @@
 package br.com.sigz.todolist;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -24,17 +26,32 @@ public class ToDoListController {
         repository.save(element);
     }
 
-    @DeleteMapping(value = "{id}")
-    public void delete(@PathVariable Long id) {
-        repository.deleteById(id);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(record -> {
+                    repository.deleteById(id);
+                    return ResponseEntity.ok().build();
+                }).orElse(ResponseEntity.notFound().build());
 
     }
 
-    @PutMapping(value = "{id}")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody @NotNull ToDoElement element) {
+//        element.setId(id);
+//        repository.save(element);
 
-    public void update(@PathVariable Long id, @RequestBody ToDoElement element) {
-        element.setId(id);
-        repository.save(element);
+
+        return repository.findById(id)
+                .map(record -> {
+                    record.setNome(element.getNome());
+                    record.setDescricao(element.getDescricao());
+                    record.setData(element.setData(LocalDateTime.now()));
+                    record.setStatus(element.getStatus());
+                    ToDoElement updated = repository.save(record);
+                    return ResponseEntity.ok().body(updated);
+                }).orElse(ResponseEntity.notFound().build());
+
 
     }
 

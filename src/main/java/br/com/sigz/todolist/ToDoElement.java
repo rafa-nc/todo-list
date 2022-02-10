@@ -1,5 +1,7 @@
 package br.com.sigz.todolist;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +15,7 @@ public class ToDoElement {
     private Long id;
     private String nome;
     private String descricao;
+    @NotNull
     private LocalDateTime data;
     private ToDoElementStatus status;
 
@@ -44,8 +47,9 @@ public class ToDoElement {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public LocalDateTime setData(LocalDateTime data) {
         this.data = data;
+        return data;
     }
 
     public ToDoElementStatus getStatus() {
@@ -55,4 +59,6 @@ public class ToDoElement {
     public void setStatus(ToDoElementStatus status) {
         this.status = status;
     }
+
+
 }
